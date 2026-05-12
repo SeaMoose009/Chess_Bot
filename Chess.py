@@ -41,7 +41,12 @@ def main():
             if board.is_checkmate() + board.can_claim_threefold_repetition() + board.is_insufficient_material() + board.can_claim_fifty_moves() + board.is_stalemate() == 0:
 # Black
 # Requesting a move from the bot and making it
+                
+                # Here is where the bot is called to make a move. Change bot_random to your bot name to have that request a move.
                 bot_move = Bots.bot_random(board)
+                # i.e Bots.my_bot
+
+                
                 board.push_san(bot_move)
                 move_list.append(bot_move)
                 
