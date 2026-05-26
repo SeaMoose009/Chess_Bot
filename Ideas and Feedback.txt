@@ -1,0 +1,59 @@
+Chess bot ideas
+
+
+Positive feedback:
+Play for the win
+(If checkmate, play it)
+
+Funny
+(If en passent, play it)
+
+Defend pieces
+(If the piece moved 'attacks' another, give points based on the value of the defending piece)
+
+Trading
+(If a piece moves to a defended square with more attackers that threatens to take equal or more material)
+
+Castling
+(Incentivise castling to the side with less action)
+
+Attack the king
+(Attacking moves made towards the opponents king are rewarded)
+
+Taking control
+(Reward bonuses to pieces placed in the center of the board)
+
+Fork
+(Excluding forks of pawns. If the piece cannot be attacked and can take peices worth more or are undefended. If it can be attacked take points if it is undefended. If the pieces it tries to take is defended, only take the one of highest value and is higher than its own)
+
+Skewer
+(If a piece can target while begin defended or not attacked, target a piece through another (That isn't a pawn))
+
+Stronger in number
+(Try to keep pawns connected in chains)
+
+
+Specialised:
+Backrank
+(If the king can only move on the back rank and there is no rook or queen to defend, create a escape square)
+
+
+
+
+Negative feedback:
+Out of danger
+(If the piece is moved into danger, take points based on value)
+
+Don't lose in one
+(If the move made results in a checkmate on the next turn for the opponent don't play it)
+
+
+Specialised:
+Defensive wall
+(Taking points if the outer 3 pawns are moved. Even more are removed if the king is sitting behind them and less if the king is on the opposite side)
+
+
+
+Evaluating:
+Better Bishop
+(Value the bishop that is opposite colour to yours and your opponents pawn chain higher)
