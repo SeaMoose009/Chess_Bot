@@ -13,16 +13,21 @@ def bot_random(board):
         move = Legal_List[random.randint(0,Legal_List.__len__()-1)]
     return move
 
+    
+
 # \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 # SACE ID number labeling the creator of the bot
 def bot_994625T(board, temperature=0): 
 # Defining the list of possible legal moves for the bots turn and the scoring
-# Moves will have the id of [Move, Score] <== maybe make it faster by setting to a uint_16
+# Moves will have the id of [Move, Score] (Move index = 0 and Score index = 1) <== maybe make it faster by setting to a uint_16
     Moves = []
     
     for m in board.legal_moves:
         Moves.append([board.san(m),0])
+
+    if Moves.__len__() == 1:
+        return Moves[0][0]
         
 # -----------------------------------------------------------
 # Adding checkmate in one
@@ -56,16 +61,9 @@ def bot_994625T(board, temperature=0):
         if i[1] < best_score:
             best_score = i[1]
 # Second pass
-    if best_score - temperature > 0:
-        for i in Moves:
-            if i[1] <= best_score - temperature:
-                final_move_list.append(i[0])
-    else:
-        for i in Moves:
+    for i in Moves:
+        if i[1] <= best_score - temperature:
             final_move_list.append(i[0])
                 
 # Returning a random move from the best options
-    if final_move_list.__len__()-1 == 0:
-        return final_move_list[0]
-    else:
-        return final_move_list[random.randint(0,final_move_list.__len__()-1)]
+    return final_move_list[random.randint(0,final_move_list.__len__()-1)]
