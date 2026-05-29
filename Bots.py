@@ -1,6 +1,6 @@
 import random
 
-#Exemplar bot that recives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
+# Exemplar bot that recives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
 def bot_random(board):
     Legal_List = []
 
@@ -12,3 +12,60 @@ def bot_random(board):
     else:
         move = Legal_List[random.randint(0,Legal_List.__len__()-1)]
     return move
+
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+# SACE ID number labeling the creator of the bot
+def bot_994625T(board, temperature=0): 
+# Defining the list of possible legal moves for the bots turn and the scoring
+# Moves will have the id of [Move, Score] <== maybe make it faster by setting to a uint_16
+    Moves = []
+    
+    for m in board.legal_moves:
+        Moves.append([board.san(m),0])
+        
+# -----------------------------------------------------------
+# Adding checkmate in one
+# ---------
+    
+    for i in Moves:
+        if i[0] == #Checkmate#:
+            return i[0] # Immediately returning the move that checkmates to reduce runtime
+        
+# -----------------------------------------------------------
+# Advoiding checkmate in one
+# ---------
+        
+    for i in Moves:
+        #Make temp board with move i[0]#
+        for m in board.legal_moves:
+            if m == #Checkmate#:
+            i[1] -= 10000 # Garentees that it avoids checkmate on itself
+
+
+# -----------------------------------------------------------
+# Picking the best avaliable move within a given temperature
+# ---------
+    
+    final_move_list = []
+    best_score = 0
+
+    
+# First pass
+    for i in Moves:
+        if i[1] < best_score:
+            best_score = i[1]
+# Second pass
+    if best_score - temperature > 0:
+        for i in Moves:
+            if i[1] <= best_score - temperature:
+                final_move_list.append(i[0])
+    else:
+        for i in Moves:
+            final_move_list.append(i[0])
+                
+# Returning a random move from the best options
+    if final_move_list.__len__()-1 == 0:
+        return final_move_list[0]
+    else:
+        return final_move_list[random.randint(0,final_move_list.__len__()-1)]
