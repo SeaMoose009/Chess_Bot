@@ -57,3 +57,6 @@ Defensive wall
 Evaluating:
 Better Bishop
 (Value the bishop that is opposite colour to yours and your opponents pawn chain higher)
+
+Cornered knight
+(Knights on the edge of the board should be worth less)
