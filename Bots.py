@@ -19,6 +19,9 @@ def bot_random(board):
 
 # SACE ID number labeling the creator of the bot
 def bot_994625T(board, temperature=0): 
+# Creating a temperatry board where the future moves can be tested.
+    temp_board = chess.Board()
+    board_fen = board.fen()
 # Defining the list of possible legal moves for the bots turn and the scoring
 # Moves will have the id of [Move, Score] (Move index = 0 and Score index = 1) <== maybe make it faster by setting to a uint_16
     Moves = []
@@ -34,7 +37,7 @@ def bot_994625T(board, temperature=0):
 # ---------
     
     for i in Moves:
-        if i[0] == #Checkmate#:
+        if i[0] == if i[0][-1] == '#':
             return i[0] # Immediately returning the move that checkmates to reduce runtime
         
 # -----------------------------------------------------------
@@ -42,9 +45,10 @@ def bot_994625T(board, temperature=0):
 # ---------
         
     for i in Moves:
-        #Make temp board with move i[0]#
-        for m in board.legal_moves:
-            if m == #Checkmate#:
+        temp_board = chess.Board(board_fen)
+        temp_board.push(i[0])
+        for m in temp_board.legal_moves:
+            if m[-1] == '#':
             i[1] -= 10000 # Garentees that it avoids checkmate on itself
 
 
