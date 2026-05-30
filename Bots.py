@@ -1,4 +1,5 @@
 import random
+import chess
 
 # Exemplar bot that recives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
 def bot_random(board):
@@ -37,7 +38,7 @@ def bot_994625T(board, temperature=0):
 # ---------
     
     for i in Moves:
-        if i[0] == if i[0][-1] == '#':
+        if i[0][-1] == '#':
             return i[0] # Immediately returning the move that checkmates to reduce runtime
         
 # -----------------------------------------------------------
