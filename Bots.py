@@ -1,17 +1,17 @@
 import random
 import chess
 
-# Exemplar bot that recives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
+# Exemplar bot that receives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
 def bot_random(board):
     Legal_List = []
 
     for m in board.legal_moves:
         Legal_List.append(board.san(m))
 
-    if Legal_List.__len__()-1 == 0:
+    if Legal_List.__len__() == 1:
         move = Legal_List[0]
     else:
-        move = Legal_List[random.randint(0,Legal_List.__len__()-1)]
+        move = Legal_List[random.randint(0,Legal_List.__len__() - 1)]
     return move
 
     
@@ -50,14 +50,14 @@ def bot_994625T(board, temperature=0):
         temp_board.push_san(i[0])
         for m in temp_board.legal_moves:
             if temp_board.san(m)[-1] == '#':
-                i[1] -= 10000  # Garentees that it avoids checkmate on itself
+                i[1] -= 10000  # Guarantees that it avoids checkmate on itself
 
     # -----------------------------------------------------------
-    # Picking the best avaliable move within a given temperature
+    # Picking the best available move within a given temperature
     # ---------
 
     final_move_list = []
-    best_score = 0
+    best_score = Moves[0][1]
 
     # First pass
     for i in Moves:
@@ -68,7 +68,9 @@ def bot_994625T(board, temperature=0):
         if i[1] >= best_score - temperature:
             final_move_list.append(i[0])
 
+    if final_move_list.__len__() > 1:
+        move = final_move_list[random.randint(0,final_move_list.__len__() - 1)]
+    else:
+        move = final_move_list[0]
     # Returning a random move from the best options
-    print(Moves)
-    print(final_move_list)
-    return final_move_list[random.randint(0, final_move_list.__len__() - 1)]
+    return move

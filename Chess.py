@@ -1,6 +1,6 @@
 import chess
 import Bots
-
+from Logging import calculate_win
 #--------------------------------------------------------------#
 
 def main():
@@ -10,7 +10,7 @@ def main():
     board.reset()
     move_list = []
 
-        while board.is_checkmate() + board.can_claim_threefold_repetition() + board.is_insufficient_material() + board.can_claim_fifty_moves() + board.is_stalemate() == 0:
+    while board.is_game_over() == 0:
 # White
 # Displaying the current board state for the player to veiw
             print(f"{board}\n\n")
@@ -38,19 +38,20 @@ def main():
                     can_move = True
                     print("Invalid move type")
 
-            if board.is_checkmate() + board.can_claim_threefold_repetition() + board.is_insufficient_material() + board.can_claim_fifty_moves() + board.is_stalemate() == 0:
+            if board.is_game_over() == 0:
 # Black
 # Requesting a move from the bot and making it
                 
                 # Here is where the bot is called to make a move. Change bot_random to your bot name to have that request a move.
-                bot_move = Bots.bot_random(board)
+                bot_move = Bots.bot_994625T(board)
                 # i.e Bots.my_bot
 
                 
                 board.push_san(bot_move)
                 move_list.append(bot_move)
                 
-# Prints the final board state and the moves of all pieces up untill that point once the game ends
+# Prints the final board state and the moves of all pieces up until that point once the game ends
+    calculate_win(board, move_list)
     print(f"{board}\n\n")
     print(f"{move_list}\n\n")
 
