@@ -1,6 +1,6 @@
 import chess
 import Bots
-from Logging import calculate_win
+from Logging import Log
 #--------------------------------------------------------------#
 
 def main():
@@ -43,7 +43,7 @@ def main():
 # Requesting a move from the bot and making it
                 
                 # Here is where the bot is called to make a move. Change bot_random to your bot name to have that request a move.
-                bot_move = Bots.bot_994625T(board)
+                bot_move = Bots.bot_random(board)
                 # i.e Bots.my_bot
 
                 
@@ -51,7 +51,6 @@ def main():
                 move_list.append(bot_move)
                 
 # Prints the final board state and the moves of all pieces up until that point once the game ends
-    calculate_win(board, move_list)
     print(f"{board}\n\n")
     print(f"{move_list}\n\n")
 
