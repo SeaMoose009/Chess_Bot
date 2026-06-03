@@ -21,7 +21,6 @@ def bot_random(board):
 # SACE ID number labeling the creator of the bot
 def bot_994625T(board, temperature=0):
     # Creating a temperatry board where the future moves can be tested.
-    temp_board = chess.Board()
     board_fen = board.fen()
     # Defining the list of possible legal moves for the bots turn and the scoring
     # Moves will have the id of [Move, Score] (Move index = 0 and Score index = 1) <== maybe make it faster by setting to a uint_16

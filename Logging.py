@@ -13,11 +13,11 @@ def clear_performace():
 
 def Log(board,move_list, WBot_time, BBot_time):
     Board = f"{board}\n{move_list}\n\n"
-    with open("Logs.txt", "a") as B:
+    with open("Board Logs.txt", "a") as B:
         B.write(Board)
 
     Logs = f"Checkmate: {board.outcome()}\n"
-    with open("Board Logs.txt", "a") as L:
+    with open("Logs.txt", "a") as L:
         L.write(Logs)
 
     Performace = f"White: {WBot_time}\nBlack: {BBot_time}\n\n"
