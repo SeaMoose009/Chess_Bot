@@ -73,3 +73,8 @@ def bot_994625T(board, temperature=0):
         move = final_move_list[0]
     # Returning a random move from the best options
     return move
+
+
+
+def bot_saceID(board):
+    pass
