@@ -38,6 +38,7 @@ def main(num_games):
 
                 B_time.append(str((time.time() - BBot_s) * 1e3) + "ms")
 
+
         Log(board, move_list, W_time, B_time)
         print(f"{i + 1}/{num_games} || {round(((i + 1) / num_games) * 100)}%")
     print("Simulation successfully executed")

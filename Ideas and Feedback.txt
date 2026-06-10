@@ -24,7 +24,7 @@ Taking control
 (Reward bonuses to pieces placed in the center of the board)
 
 Fork
-(Excluding forks of pawns. If the piece cannot be attacked and can take peices worth more or are undefended. If it can be attacked take points if it is undefended. If the pieces it tries to take is defended, only take the one of highest value and is higher than its own)
+(Excluding forks of pawns. If the piece cannot be attacked and can take pieces worth more or are undefended. If it can be attacked take points if it is undefended. If the pieces it tries to take is defended, only take the one of highest value and is higher than its own)
 
 Skewer
 (If a piece can target while begin defended or not attacked, target a piece through another (That isn't a pawn))

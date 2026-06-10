@@ -1,5 +1,9 @@
 import random
+from operator import invert
+
 import chess
+from chess import BaseBoard, square_name
+
 
 # Exemplar bot that receives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
 def bot_random(board):
@@ -20,6 +24,28 @@ def bot_random(board):
 
 # SACE ID number labeling the creator of the bot
 def bot_994625T(board, temperature=0):
+
+    # Base pieces scoring.
+    score_base = {
+        "Q": 9,
+        "R": 5,
+        "B": 3,
+        "N": 3,
+        "P": 1,
+
+        "q" : 9,
+        "r" : 5,
+        "b" : 3,
+        "n" : 3,
+        "p" : 1
+    }
+
+    # Check whose turn it is
+    if board.turn == chess.WHITE:
+        colour = True
+    else:
+        colour = False
+
     # Creating a temperatry board where the future moves can be tested.
     board_fen = board.fen()
     # Defining the list of possible legal moves for the bots turn and the scoring
@@ -41,7 +67,7 @@ def bot_994625T(board, temperature=0):
             return i[0]  # Immediately returning the move that checkmates to reduce runtime
 
     # -----------------------------------------------------------
-    # Advoiding checkmate in one
+    # Avoiding checkmate in one
     # ---------
 
     for i in Moves:
@@ -52,9 +78,21 @@ def bot_994625T(board, temperature=0):
                 i[1] -= 10000  # Guarantees that it avoids checkmate on itself
 
     # -----------------------------------------------------------
-    # Picking the best available move within a given temperature
+    # Adding score for moving to defended squares
     # ---------
 
+    for m in Moves:
+        move = san_to_uci(m[0], board)
+        temp = chess.Board(board_fen)
+        temp.push_san(m[0])
+        atk = temp.attackers(not colour, chess.parse_square(uci_to(move))).__len__()
+        dfd = temp.attackers(colour, chess.parse_square(uci_to(move))).__len__()
+
+        m[1] += dfd-atk
+
+    # -----------------------------------------------------------
+    # Picking the best available move within a given temperature
+    # ---------
     final_move_list = []
     best_score = Moves[0][1]
 
@@ -73,6 +111,33 @@ def bot_994625T(board, temperature=0):
         move = final_move_list[0]
     # Returning a random move from the best options
     return move
+
+#------------------------------------------------------
+#Function to convert san type moves to uci
+#-----------
+def san_to_uci(san_move, board):
+
+    try:
+        move = board.parse_san(san_move)
+        return move.uci()
+    except ValueError as e:
+        return f"Invalid SAN move: {e}"
+
+
+#------------------------------------------------------
+#Function to get the first and last square
+#-----------
+
+def uci_from(uci):
+    return uci[0]+uci[1]
+
+
+def uci_to(uci):
+    return uci[2] + uci[3]
+
+
+# \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 
 
 

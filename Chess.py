@@ -43,7 +43,7 @@ def main():
 # Requesting a move from the bot and making it
                 
                 # Here is where the bot is called to make a move. Change bot_random to your bot name to have that request a move.
-                bot_move = Bots.bot_random(board)
+                bot_move = Bots.bot_994625T(board)
                 # i.e Bots.my_bot
 
                 
