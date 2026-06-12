@@ -24,21 +24,48 @@ def bot_random(board):
 
 # SACE ID number labeling the creator of the bot
 def bot_994625T(board, temperature=0):
+    # Creating a temperatry board where the future moves can be tested.
+    board_fen = board.fen()
+
 
     # Base pieces scoring.
     score_base = {
-        "Q": 9,
-        "R": 5,
-        "B": 3,
-        "N": 3,
-        "P": 1,
+        # Classifying the king as None so it doesn't try to taking/capturing/using its king
+        "K" : 0,
+        "Q" : 9,
+        "R" : 5,
+        "B" : 3,
+        "N" : 3,
+        "P" : 1,
 
+        "k" : 0,
         "q" : 9,
         "r" : 5,
         "b" : 3,
         "n" : 3,
-        "p" : 1
+        "p" : 1,
+
+        "None" : 0
     }
+
+    board_score_weight = {
+        "a1" : 1,   "b1" : 0,   "c1" : 0,   "d1" : 0,   "e1" : 0,   "f1" : 0,   "g1" : 0,   "h1" : 0,
+        "a2" : 1,   "b2" : 0,   "c2" : 0,   "d2" : 0,   "e2" : 0,   "f2" : 0,   "g2" : 0,   "h2" : 0,
+        "a3" : 0,   "b3" : 0,   "c3" : 0,   "d3" : 0,   "e3" : 0,   "f3" : 0,   "g3" : 0,   "h3" : 0,
+        "a4" : 0,   "b4" : 0,   "c4" : 0,   "d4" : 0,   "e4" : 0,   "f4" : 0,   "g4" : 0,   "h4" : 0,
+        "a5" : 0,   "b5" : 0,   "c5" : 0,   "d5" : 0,   "e5" : 0,   "f5" : 0,   "g5" : 0,   "h5" : 0,
+        "a6" : 0,   "b6" : 0,   "c6" : 0,   "d6" : 0,   "e6" : 0,   "f6" : 0,   "g6" : 0,   "h6" : 0,
+        "a7" : 0,   "b7" : 0,   "c7" : 0,   "d7" : 0,   "e7" : 0,   "f7" : 0,   "g7" : 0,   "h7" : 0,
+        "a8" : 0,   "b8" : 0,   "c8" : 0,   "d8" : 0,   "e8" : 0,   "f8" : 0,   "g8" : 0,   "h8" : 0
+    }
+
+
+    # weighting scores
+
+    SCORE_WEIGHT_move_to_defended = 1
+    SCORE_WEIGHT_capture_higher_scored = 3
+    SCORE_WEIGHT_take_center = 1
+
 
     # Check whose turn it is
     if board.turn == chess.WHITE:
@@ -46,10 +73,8 @@ def bot_994625T(board, temperature=0):
     else:
         colour = False
 
-    # Creating a temperatry board where the future moves can be tested.
-    board_fen = board.fen()
     # Defining the list of possible legal moves for the bots turn and the scoring
-    # Moves will have the id of [Move, Score] (Move index = 0 and Score index = 1) <== maybe make it faster by setting to a uint_16
+    # Moves will have the id of [Move, Score, UCI_move] (Move index = 0 and Score index = 1) <== maybe make it faster by setting to a uint_16
     Moves = []
 
     for m in board.legal_moves:
@@ -57,6 +82,10 @@ def bot_994625T(board, temperature=0):
 
     if Moves.__len__() == 1:
         return Moves[0][0]
+
+    # Adding UCI moves
+    for m in Moves:
+        m.append(san_to_uci(m[0], board))
 
     # -----------------------------------------------------------
     # Adding checkmate in one
@@ -82,13 +111,34 @@ def bot_994625T(board, temperature=0):
     # ---------
 
     for m in Moves:
-        move = san_to_uci(m[0], board)
+        move = m[2]
         temp = chess.Board(board_fen)
         temp.push_san(m[0])
         atk = temp.attackers(not colour, chess.parse_square(uci_to(move))).__len__()
         dfd = temp.attackers(colour, chess.parse_square(uci_to(move))).__len__()
 
-        m[1] += dfd-atk
+        m[1] += (dfd-atk) * SCORE_WEIGHT_move_to_defended
+
+    # -----------------------------------------------------------
+    # Taking pieces with higher or equal score
+    # ---------
+
+    for m in Moves:
+        from_piece = board.piece_at(chess.parse_square(uci_from(m[2])))
+        to_piece = board.piece_at(chess.parse_square(uci_to(m[2])))
+
+        from_score = score_base[str(from_piece)]
+        to_score = score_base[str(to_piece)]
+
+        if from_score + to_score != 0:
+            if from_score >= to_score:
+                m[1] += from_score - to_score * SCORE_WEIGHT_capture_higher_scored
+
+    # -----------------------------------------------------------
+    # Taking the center of the board
+    # ---------
+
+
 
     # -----------------------------------------------------------
     # Picking the best available move within a given temperature
@@ -110,6 +160,7 @@ def bot_994625T(board, temperature=0):
     else:
         move = final_move_list[0]
     # Returning a random move from the best options
+
     return move
 
 #------------------------------------------------------

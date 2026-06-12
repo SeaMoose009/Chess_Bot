@@ -1,0 +1,10 @@
+. . . . R b r .
+. . . . . p p p
+. . k . . n . P
+B N . . K . P .
+. . N . q P . .
+R . . . P . . .
+. P . R . . . .
+. R . . . . . .
+['c3', 'Nf6', 'a4', 'Rg8', 'd4', 'Rh8', 'Bd2', 'Rg8', 'Nf3', 'Nc6', 'Ra2', 'Rb8', 'Bh6', 'Ra8', 'Qd3', 'Rb8', 'Ne5', 'Ra8', 'a5', 'Rb8', 'c4', 'Rh8', 'Na3', 'Rg8', 'Qg3', 'Rh8', 'Bc1', 'Rg8', 'Bh6', 'Ra8', 'Nf3', 'Rb8', 'a6', 'Rh8', 'Bf4', 'Rg8', 'Bd2', 'Ra8', 'Qf4', 'Rb8', 'Qh6', 'Ra8', 'c5', 'Rb8', 'Ne5', 'Rh8', 'Nc2', 'Rg8', 'Na1', 'Rh8', 'Bb4', 'Rg8', 'Qf4', 'Ra8', 'Qc1', 'Rb8', 'Qd1', 'Rh8', 'Qa4', 'Rg8', 'Qxc6', 'Ra8', 'h3', 'Rh8', 'Nc4', 'Rg8', 'Na3', 'Rh8', 'Qb5', 'Rg8', 'e3', 'Rh8', 'Bc4', 'Rg8', 'f4', 'Rb8', 'Qc6', 'Ra8', 'Qxd7+', 'Kxd7', 'Ke2', 'Qe8', 'Kf2', 'Qd8', 'd5', 'Qe8', 'd6', 'Qd8', 'Kf1', 'Qe8', 'Bb5+', 'c6', 'g3', 'Qd8', 'Kg2', 'Qe8', 'Bc3', 'Qd8', 'Kf1', 'Qe8', 'Bd4', 'Qd8', 'Ke1', 'Qe8', 'Nb3', 'Qd8', 'h4', 'Qe8', 'Rh2', 'Qd8', 'Kd1', 'Qe8', 'Bxc6+', 'Kxc6', 'Be5', 'Qd7', 'Nd4+', 'Kd5', 'Kc2', 'Qe6', 'Rf2', 'Qd7', 'c6', 'Qe6', 'g4', 'Qd7', 'axb7', 'Qe6', 'd7', 'Qd6', 'Kd3', 'Qe6', 'dxc8=R', 'Qd6', 'bxa8=R', 'Qe6', 'Kc3', 'Qd6', 'Nf5', 'Qe6', 'Rf1', 'Qd6', 'Re8', 'Qe6', 'Nc4', 'Qd7', 'Bc7', 'Qe6', 'R8xa7', 'Qe4', 'Rb7', 'Qe6', 'Rxe7', 'Qe4', 'Ra3', 'Qe6', 'Rf3', 'Qe4', 'Rb8', 'Qe6', 'h5', 'Qe4', 'Rbb3', 'Qe6', 'g5', 'Qe4', 'Ra1', 'Qe6', 'Rc1', 'Qe4', 'Re5+', 'Kxc6', 'Rb1', 'Qd5', 'Nfd6', 'Qe6', 'Rf2', 'Qd7', 'Rd2', 'Qg4', 'Re8', 'Qd7', 'Ra3', 'Qg4', 'Kd4', 'Qd7', 'h6', 'Qg4', 'Ba5', 'Qd7', 'Rc3', 'Qg4', 'Nb5', 'Qh5', 'Ke5', 'Qg6', 'Ra3', 'Qe4#']
+
