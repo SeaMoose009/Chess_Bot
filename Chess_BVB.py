@@ -30,7 +30,7 @@ def main(num_games):
             if board.is_game_over() == 0:
                 BBot_s = time.time()
 # Black
-                bot_move = Bots.bot_994625T(board)
+                bot_move = Bots.bot_994625T(board, 0, move_list.__len__())
                 board.push_san(bot_move)
                 move_list.append(bot_move)
 
