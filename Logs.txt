@@ -1,1 +1,0 @@
-Checkmate: Outcome(termination=<Termination.CHECKMATE: 1>, winner=False)

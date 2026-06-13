@@ -1,8 +1,6 @@
+import math
 import random
-from operator import invert
-
 import chess
-from chess import BaseBoard, square_name
 
 
 # Exemplar bot that receives the board state, picks a random move from the legal list, and returns that move to be made within the Handler
@@ -49,22 +47,25 @@ def bot_994625T(board, temperature=0):
     }
 
     board_score_weight = {
-        "a1" : 1,   "b1" : 0,   "c1" : 0,   "d1" : 0,   "e1" : 0,   "f1" : 0,   "g1" : 0,   "h1" : 0,
-        "a2" : 1,   "b2" : 0,   "c2" : 0,   "d2" : 0,   "e2" : 0,   "f2" : 0,   "g2" : 0,   "h2" : 0,
-        "a3" : 0,   "b3" : 0,   "c3" : 0,   "d3" : 0,   "e3" : 0,   "f3" : 0,   "g3" : 0,   "h3" : 0,
-        "a4" : 0,   "b4" : 0,   "c4" : 0,   "d4" : 0,   "e4" : 0,   "f4" : 0,   "g4" : 0,   "h4" : 0,
-        "a5" : 0,   "b5" : 0,   "c5" : 0,   "d5" : 0,   "e5" : 0,   "f5" : 0,   "g5" : 0,   "h5" : 0,
-        "a6" : 0,   "b6" : 0,   "c6" : 0,   "d6" : 0,   "e6" : 0,   "f6" : 0,   "g6" : 0,   "h6" : 0,
-        "a7" : 0,   "b7" : 0,   "c7" : 0,   "d7" : 0,   "e7" : 0,   "f7" : 0,   "g7" : 0,   "h7" : 0,
-        "a8" : 0,   "b8" : 0,   "c8" : 0,   "d8" : 0,   "e8" : 0,   "f8" : 0,   "g8" : 0,   "h8" : 0
+        "a1" : 0.5,   "b1" : 0.5,   "c1" : 0.5,   "d1" : 0.5,   "e1" : 0.5,   "f1" : 0.5,   "g1" : 0.5,   "h1" : 0.5,
+        "a2" : 0.5,   "b2" : 1,   "c2" : 1,   "d2" : 1,   "e2" : 1,   "f2" : 1,   "g2" : 1,   "h2" : 0.5,
+        "a3" : 0.5,   "b3" : 1,   "c3" : 1.5,   "d3" : 1.5,   "e3" : 1.5,   "f3" : 1.5,   "g3" : 1,   "h3" : 0.5,
+        "a4" : 0.5,   "b4" : 1,   "c4" : 1.5,   "d4" : 2,   "e4" : 2,   "f4" : 1.5,   "g4" : 1,   "h4" : 0.5,
+        "a5" : 0.5,   "b5" : 1,   "c5" : 1.5,   "d5" : 2,   "e5" : 2,   "f5" : 1.5,   "g5" : 1,   "h5" : 0.5,
+        "a6" : 0.5,   "b6" : 1,   "c6" : 1.5,   "d6" : 1.5,   "e6" : 1.5,   "f6" : 1.5,   "g6" : 1,   "h6" : 0.5,
+        "a7" : 0.5,   "b7" : 1,   "c7" : 1,   "d7" : 1,   "e7" : 1,   "f7" : 1,   "g7" : 1,   "h7" : 0.5,
+        "a8" : 0.5,   "b8" : 0.5,   "c8" : 0.5,   "d8" : 0.5,   "e8" : 0.5,   "f8" : 0.5,   "g8" : 0.5,   "h8" : 0.5
     }
 
 
     # weighting scores
 
     SCORE_WEIGHT_move_to_defended = 1
-    SCORE_WEIGHT_capture_higher_scored = 3
-    SCORE_WEIGHT_take_center = 1
+    SCORE_WEIGHT_move_to_safety = 3
+    SCORE_WEIGHT_capture_higher_scored = 10
+    SCORE_WEIGHT_free_piece = 10
+    SCORE_WEIGHT_checking = 3
+    SCORE_WEIGHT_avoid_check = 3
 
 
     # Check whose turn it is
@@ -107,38 +108,64 @@ def bot_994625T(board, temperature=0):
                 i[1] -= 10000  # Guarantees that it avoids checkmate on itself
 
     # -----------------------------------------------------------
-    # Adding score for moving to defended squares
+    # Checks for moves from and to
     # ---------
 
     for m in Moves:
         move = m[2]
         temp = chess.Board(board_fen)
         temp.push_san(m[0])
+        pos_weight = board_score_weight[uci_to(m[2])]
+
         atk = temp.attackers(not colour, chess.parse_square(uci_to(move))).__len__()
         dfd = temp.attackers(colour, chess.parse_square(uci_to(move))).__len__()
 
-        m[1] += (dfd-atk) * SCORE_WEIGHT_move_to_defended
+        atk_from = temp.attackers(not colour, chess.parse_square(uci_from(move))).__len__()
+        dfd_from = temp.attackers(colour, chess.parse_square(uci_from(move))).__len__()
 
-    # -----------------------------------------------------------
-    # Taking pieces with higher or equal score
-    # ---------
-
-    for m in Moves:
         from_piece = board.piece_at(chess.parse_square(uci_from(m[2])))
         to_piece = board.piece_at(chess.parse_square(uci_to(m[2])))
 
         from_score = score_base[str(from_piece)]
         to_score = score_base[str(to_piece)]
 
+
+        # Defending pieces
+        m[1] += ((dfd*pos_weight)-atk) * SCORE_WEIGHT_move_to_defended
+
+        # Avoiding attack
+        m[1] += ((dfd_from*pos_weight) - atk_from + math.sqrt(from_score)) * SCORE_WEIGHT_move_to_safety
+
+        # Taking free material
+        if to_piece != None and atk == 0:
+            m[1] += to_score * SCORE_WEIGHT_free_piece
+
+        # Taking pieces with higher or equal score
         if from_score + to_score != 0:
             if from_score >= to_score:
-                m[1] += from_score - to_score * SCORE_WEIGHT_capture_higher_scored
+                m[1] += (from_score - to_score) * SCORE_WEIGHT_capture_higher_scored
+
+
+
 
     # -----------------------------------------------------------
-    # Taking the center of the board
+    # Checking
     # ---------
 
+    for i in Moves:
+        if i[0][-1] == '+':
+            i[1]  += SCORE_WEIGHT_checking
 
+    # -----------------------------------------------------------
+    # Avoiding check
+    # ---------
+
+    for i in Moves:
+        temp_board = chess.Board(board_fen)
+        temp_board.push_san(i[0])
+        for m in temp_board.legal_moves:
+            if temp_board.san(m)[-1] == '+':
+                i[1] -= SCORE_WEIGHT_avoid_check
 
     # -----------------------------------------------------------
     # Picking the best available move within a given temperature

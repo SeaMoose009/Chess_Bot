@@ -21,7 +21,6 @@ def main(num_games):
 # Bot vs Bot
           
 # White
-# Bot 1 - bot_random
             bot_move = Bots.bot_random(board)
             board.push_san(bot_move)
             move_list.append(bot_move)
@@ -31,7 +30,6 @@ def main(num_games):
             if board.is_game_over() == 0:
                 BBot_s = time.time()
 # Black
-# Bot 2 - bot_994625T
                 bot_move = Bots.bot_994625T(board)
                 board.push_san(bot_move)
                 move_list.append(bot_move)
@@ -49,4 +47,4 @@ def main(num_games):
 
 
 #First number represents the number of games
-main(1)
+main(100)

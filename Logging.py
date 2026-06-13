@@ -16,7 +16,7 @@ def Log(board,move_list, WBot_time, BBot_time):
     with open("Board Logs.txt", "a") as B:
         B.write(Board)
 
-    Logs = f"Checkmate: {board.outcome()}\n"
+    Logs = f"Checkmate: {board.outcome().winner}\n"
     with open("Logs.txt", "a") as L:
         L.write(Logs)
 
